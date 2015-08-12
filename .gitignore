@@ -1,0 +1,5 @@
+multipix
+*.o
+*.la
+*.lo
+*.so
