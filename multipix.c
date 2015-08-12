@@ -5,6 +5,8 @@
 #include <GL/glx.h>
 #include <stdio.h>
 
+static int verbose;
+
 GLXPixmap
 createGLXPixmap(Display* display, Pixmap pixmap)
 {
@@ -24,13 +26,19 @@ createGLXPixmap(Display* display, Pixmap pixmap)
 
   GLXFBConfig cfg = config[0];
 
+  if (verbose) {
+    GLXFBConfigID id;
+    glXGetFBConfigAttrib(display, cfg, GLX_FBCONFIG_ID, (int*) &id);
+    printf("Using FBConfig with ID 0x%X\n", id);
+  }
+
   return glXCreatePixmap(display, cfg, pixmap, NULL);
 }
 
 int
 main(int argc, char* argv[])
 {
-  int verbose = !!getenv("VERBOSE");
+  verbose = !!getenv("VERBOSE");
 
   Display* display = XOpenDisplay(NULL);
   if (!display) {
